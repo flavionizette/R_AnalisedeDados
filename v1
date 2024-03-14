@@ -1,0 +1,21 @@
+# Instalar e carregar as bibliotecas necessárias
+install.packages("readxl")
+install.packages("dplyr")
+library(readxl)
+library(dplyr)
+
+# Carregar a planilha do Excel
+caminho_planilha <- "colocar\caminho\planilha"
+dados <- read_excel(caminho_planilha)
+
+# Filtrar e agrupar as oportunidades por cliente e calcular a rentabilidade total
+rentabilidade_por_cliente <- dados %>%
+  group_by(`Nome do Cliente`) %>%
+  summarise(Rentabilidade_Total = sum(Oportunidade))
+
+# Ordenar os clientes pela rentabilidade em ordem decrescente
+rentabilidade_por_cliente <- rentabilidade_por_cliente[order(rentabilidade_por_cliente$Rentabilidade_Total, decreasing = TRUE), ]
+
+# Exibir os 10 clientes mais rentáveis
+top_20_clientes <- head(rentabilidade_por_cliente, 20)
+print(top_20_clientes)
